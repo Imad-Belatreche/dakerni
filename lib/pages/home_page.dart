@@ -1,3 +1,4 @@
+import 'package:dakerni/widgets/date_time_picker.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -28,6 +29,7 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'Welcome to Dakerni!',
@@ -64,8 +66,8 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             SizedBox(height: 14),
-            //TODO: Add time and date picker here
-            SizedBox(height: 16),
+            DateTimePicker(),
+            SizedBox(height: 36),
             ElevatedButton(
               onPressed: () {
                 //TODO: Show notification with the text from _textController.text
@@ -76,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
 
-              child: Text('Show notification', style: TextStyle(fontSize: 17)),
+              child: Text('Add notification', style: TextStyle(fontSize: 17)),
             ),
           ],
         ),

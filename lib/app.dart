@@ -23,6 +23,12 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
+        cardTheme: CardThemeData(
+          elevation: 1,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
         colorScheme: ColorScheme.fromSeed(
           primary: cyberRed,
           onPrimary: pureWhite,
