@@ -1,9 +1,22 @@
 import 'package:dakerni/app.dart';
+import 'package:dakerni/services/notificatio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:timezone/data/latest.dart';
+import 'package:timezone/timezone.dart' as tz;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final TimezoneInfo currentTimeZone = await FlutterTimezone.getLocalTimezone();
+  initializeTimeZones();
+  tz.setLocalLocation(tz.getLocation(currentTimeZone.identifier));
+
+  await NotificationService.instance.initialize();
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(const MyApp());
 }
-
-
-
