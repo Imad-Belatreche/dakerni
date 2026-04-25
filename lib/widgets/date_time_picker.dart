@@ -84,7 +84,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                         final picked = await showDatePicker(
                           context: context,
                           firstDate: DateTime.now(),
-                          lastDate: DateTime.now().add(Duration(days: 365)),
+                          lastDate: DateTime.now().add(Duration(days: 1000)),
                         );
                         if (picked != null) {
                           widget.scheduleService.updateDate(picked);
