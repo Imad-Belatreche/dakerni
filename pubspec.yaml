@@ -57,12 +57,6 @@ dev_dependencies:
   isar_generator: ^3.1.0+1
   build_runner: ^2.4.13
 
-dependency_overrides:
-  isar_flutter_libs:
-    git:
-      url: https://github.com/MrLittleWhite/isar_flutter_libs.git
-      ref: main
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
