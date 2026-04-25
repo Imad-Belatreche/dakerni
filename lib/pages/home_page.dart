@@ -1,6 +1,5 @@
 import 'package:dakerni/models/schedule_model.dart';
 import 'package:dakerni/services/notificatio_service.dart';
-import 'package:dakerni/services/permission_service.dart';
 import 'package:dakerni/services/schedule_service.dart';
 import 'package:dakerni/widgets/date_time_picker.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _textController = TextEditingController();
-  final PermissionService _permissionService = PermissionService();
   final ScheduleService _scheduleService = ScheduleService(
     ScheduleModel(dateTime: DateTime.now()),
   );
@@ -82,7 +80,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () async {
                 //TODO: Show snackbars or toasts later
                 final text = _textController.text.trim();
-                final isGranted = await _permissionService
+                final isGranted = await NotificationService.instance
                     .requestNotificationPermission(context);
                 if (isGranted == null || !isGranted) return;
 
