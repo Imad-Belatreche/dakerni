@@ -13,3 +13,11 @@ bool isFutureDateTime(DateTime selectedDate, TimeOfDay selectedTime) {
 
   return finalDateTime.isAfter(now);
 }
+
+String formateDate(DateTime dateTime) {
+  return "${dateTime.day}/${dateTime.month}/${dateTime.year}";
+}
+
+String formateTime(DateTime dateTime) {
+  return "${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}";
+}
