@@ -15,6 +15,24 @@ subprojects {
     val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
 }
+
+subprojects {
+    afterEvaluate {
+        if (project.plugins.hasPlugin("com.android.library")) {
+            project.extensions.configure<com.android.build.gradle.LibraryExtension>("android") {
+                compileSdk = 34
+            }
+        }
+        if (project.name == "isar_flutter_libs") {
+            project.extensions.configure<com.android.build.gradle.LibraryExtension>("android") {
+                if (namespace == null) {
+                    namespace = "dev.isar.isar_flutter_libs"
+                }
+            }
+        }
+    }
+}
+
 subprojects {
     project.evaluationDependsOn(":app")
 }
