@@ -1,4 +1,4 @@
-# dakerni
+# Dakerni
 
 An application to push any custom notification whenever
 
