@@ -1,5 +1,7 @@
+import 'package:dakerni/cubits/notification/notification_cubit.dart';
 import 'package:dakerni/pages/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -46,7 +48,10 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
       ),
-      home: const HomePage(),
+      home: BlocProvider(
+        create: (context) => NotificationCubit(),
+        child: const HomePage(),
+      ),
     );
   }
 }
