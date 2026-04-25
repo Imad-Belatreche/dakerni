@@ -1,4 +1,5 @@
 import 'package:dakerni/app.dart';
+import 'package:dakerni/isar_setup.dart';
 import 'package:dakerni/services/notificatio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,5 +19,7 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
+  await initializeIsar();
   runApp(const MyApp());
 }
