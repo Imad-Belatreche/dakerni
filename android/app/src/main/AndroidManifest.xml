@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.EXACT_ALARM"/>
     <application
-        android:label="dakerni"
+        android:label="Dakerni"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
