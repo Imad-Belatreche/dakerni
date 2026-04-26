@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dakerni/cubits/notification/notification_cubit.dart';
 import 'package:dakerni/models/notification_model.dart';
 import 'package:dakerni/widgets/day_list.dart';
@@ -48,7 +46,6 @@ class NotificationPage extends StatelessWidget {
             ];
           }
         }
-        log(" Grouped notifications: $groupedNotifs groups");
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
           child: ListView(

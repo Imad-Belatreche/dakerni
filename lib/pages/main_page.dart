@@ -31,10 +31,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
     return Scaffold(
-      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: AnimatedSwitcher(
           duration: const Duration(milliseconds: 420),
@@ -57,8 +54,6 @@ class _MainPageState extends State<MainPage> {
             key: ValueKey(_selectedIndex),
           ),
         ),
-        backgroundColor: colorScheme.primary,
-        foregroundColor: colorScheme.onPrimary,
       ),
       body: ClipRRect(
         borderRadius: BorderRadius.circular(20),
@@ -105,7 +100,6 @@ class _MainPageState extends State<MainPage> {
           highlightColor: Colors.transparent,
         ),
         child: BottomNavigationBar(
-          backgroundColor: colorScheme.surface,
           elevation: 10,
           currentIndex: _selectedIndex,
           onTap: (index) {
