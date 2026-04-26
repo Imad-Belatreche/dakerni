@@ -1,7 +1,11 @@
+import 'dart:developer';
+import 'dart:math' hide log;
+
+import 'package:dakerni/utils/exceptions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/timezone.dart';
 
 class NotificationService {
   NotificationService._();
@@ -66,23 +70,45 @@ class NotificationService {
     required int id,
     required String title,
     required String body,
-    required tz.TZDateTime scheduledDate,
-  }) {
-    return plugin.zonedSchedule(
-      id: id,
-      scheduledDate: scheduledDate,
-      title: title,
-      body: body,
-      notificationDetails: NotificationDetails(
-        android: AndroidNotificationDetails(
-          'channel_id',
-          'channel_name',
-          channelDescription: 'channel_description',
-          importance: Importance.max,
-          priority: Priority.high,
-        ),
-      ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    required TZDateTime scheduledDate,
+  }) async {
+    log(
+      "Scheduling notification with id: $id at $scheduledDate with title: $title and body: $body",
     );
+    try {
+      await plugin.zonedSchedule(
+        id: id,
+        scheduledDate: scheduledDate,
+        title: title,
+        body: body,
+        notificationDetails: NotificationDetails(
+          android: AndroidNotificationDetails(
+            'channel_id',
+            'channel_name',
+            channelDescription: 'channel_description',
+            importance: Importance.max,
+            priority: Priority.high,
+          ),
+        ),
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      );
+    } catch (e) {
+      log(
+        "Error scheduling notification with id: $id: $e",
+      );
+      throw NotificationPluginException(e.toString());
+    }
+  }
+
+  Future<void> cancelNotification(int id) async {
+    try {
+      log("Cancelling notification with id: $id");
+      await plugin.cancel(id: id);
+    } catch (e) {
+      log(
+        "Error cancelling notification with id: ${id.clamp(-pow(2, 31), pow(2, 31) - 1).toInt()}: $e",
+      );
+      throw NotificationPluginException(e.toString());
+    }
   }
 }
