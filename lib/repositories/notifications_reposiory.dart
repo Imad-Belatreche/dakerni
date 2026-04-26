@@ -3,10 +3,12 @@ import 'package:dakerni/models/notification_model.dart';
 import 'package:isar/isar.dart';
 
 class NotificationsReposiory {
-  Future<void> addNotification(NotificationModel notification) async {
+  Future<int> addNotification(NotificationModel notification) async {
+    int id = -1;
     await isar.writeTxn(() async {
-      await isar.notificationModels.put(notification);
+      id = await isar.notificationModels.put(notification);
     });
+    return id;
   }
 
   Future<void> updateNotification(NotificationModel notification) async {
@@ -23,5 +25,9 @@ class NotificationsReposiory {
 
   Future<List<NotificationModel>> getAllNotifications() async {
     return await isar.notificationModels.where().findAll();
+  }
+
+  Future<NotificationModel?> getNotificationById(int id) async {
+    return await isar.notificationModels.get(id);
   }
 }
