@@ -1,5 +1,9 @@
+import 'dart:developer';
+import 'dart:math' hide log;
+
 import 'package:dakerni/cubits/notification/notification_cubit.dart';
 import 'package:dakerni/models/notification_model.dart';
+import 'package:dakerni/utils/constants.dart';
 import 'package:dakerni/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +20,7 @@ class DayList extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+          color: colorScheme.onSurface.withAlpha(150),
           width: 1,
         ),
       ),
@@ -27,9 +31,7 @@ class DayList extends StatelessWidget {
             formateDate(notifications[0].scheduledDate),
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          Divider(
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-          ),
+          Divider(color: colorScheme.onSurface.withAlpha(150)),
           ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -40,18 +42,12 @@ class DayList extends StatelessWidget {
                   notifications[index].content,
                   style: TextStyle(
                     fontSize: 16,
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withAlpha(190),
+                    color: colorScheme.onSurface.withAlpha(190),
                   ),
                 ),
                 subtitle: Text(
                   formateTime(notifications[index].scheduledDate),
-                  style: TextStyle(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withAlpha(150),
-                  ),
+                  style: TextStyle(color: colorScheme.onSurface.withAlpha(150)),
                 ),
                 leading: Icon(
                   Icons.notifications,
@@ -59,36 +55,116 @@ class DayList extends StatelessWidget {
                       notifications[index].scheduledDate.isBefore(
                         DateTime.now(),
                       )
-                      ? Theme.of(context).colorScheme.onSurface.withAlpha(150)
-                      : Theme.of(context).colorScheme.primary,
+                      ? colorScheme.onSurface.withAlpha(150)
+                      : colorScheme.primary,
                 ),
                 trailing: IconButton(
                   onPressed: () async {
-                    final deleted = await context
-                        .read<NotificationCubit>()
-                        .deleteNotification(notifications[index].id);
-                    if (!context.mounted) return;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: Theme.of(
-                          context,
-                        ).colorScheme.surfaceContainer,
-                        content: Text(
-                          "Reminder deleted successfully!",
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface,
+                    final cubit = context.read<NotificationCubit>();
+                    final messenger = ScaffoldMessenger.of(context);
+                    try {
+                      final deleted = await cubit.deleteNotification(
+                        notifications[index].id,
+                      );
+                      log(
+                        "Deleting notification with id: ${notifications[index].id.clamp(-pow(2, 31), pow(2, 31) - 1).toInt()}",
+                      );
+
+                      log(
+                        "Showing snackbar for deleted notification with id: ${notifications[index].id}",
+                      );
+                      messenger.showSnackBar(
+                        SnackBar(
+                          backgroundColor: colorScheme.surfaceContainer,
+                          content: Text(
+                            "Reminder deleted successfully!",
+                            style: TextStyle(color: colorScheme.onSurface),
+                          ),
+                          action: SnackBarAction(
+                            label: "Undo",
+                            onPressed: () async {
+                              try {
+                                await cubit.addNotification(deleted);
+                                messenger.hideCurrentSnackBar();
+                                messenger.showSnackBar(
+                                  SnackBar(
+                                    backgroundColor:
+                                        colorScheme.surfaceContainer,
+                                    content: Text(
+                                      "Reminder restored successfully!",
+                                      style: TextStyle(
+                                        color: colorScheme.onSurface,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                                return;
+                              } catch (e) {
+                                messenger.hideCurrentSnackBar();
+                                messenger.showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: colorScheme.errorContainer,
+                                    content: Text(
+                                      "Failed to restore reminder: $e",
+                                      style: TextStyle(
+                                        color: colorScheme.onErrorContainer,
+                                      ),
+                                    ),
+                                    action: SnackBarAction(
+                                      label: "Retry",
+                                      onPressed: () async {
+                                        try {
+                                          await cubit.addNotification(deleted);
+                                          messenger.showSnackBar(
+                                            SnackBar(
+                                              backgroundColor:
+                                                  colorScheme.surfaceContainer,
+                                              content: Text(
+                                                "Reminder restored successfully!",
+                                                style: TextStyle(
+                                                  color: colorScheme.onSurface,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        } catch (e) {
+                                          messenger.hideCurrentSnackBar();
+                                          messenger.showSnackBar(
+                                            SnackBar(
+                                              backgroundColor:
+                                                  colorScheme.errorContainer,
+                                              content: Text(
+                                                "Failed to restore reminder: $e",
+                                                style: TextStyle(
+                                                  color: colorScheme
+                                                      .onErrorContainer,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
                           ),
                         ),
-                        action: SnackBarAction(
-                          label: "Undo",
-                          onPressed: () {
-                            context.read<NotificationCubit>().addNotification(
-                              deleted,
-                            );
-                          },
+                      );
+                    } catch (e) {
+                      messenger.showSnackBar(
+                        SnackBar(
+                          backgroundColor: colorScheme.errorContainer,
+                          content: Text(
+                            "Failed to delete reminder: $e",
+                            style: TextStyle(
+                              color: colorScheme.onErrorContainer,
+                            ),
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   },
                   icon: Icon(Icons.delete_outlined),
                 ),
