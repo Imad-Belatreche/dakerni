@@ -1,4 +1,5 @@
 import 'package:dakerni/services/schedule_service.dart';
+import 'package:dakerni/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class DateTimePicker extends StatefulWidget {
@@ -23,13 +24,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
                 SizedBox(
                   width: 110,
                   child: Card(
-                    shadowColor: Theme.of(context).colorScheme.surface,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(10),
                       splashFactory: NoSplash.splashFactory,
-                      highlightColor: Theme.of(
-                        context,
-                      ).colorScheme.primary.withAlpha(150),
+                      highlightColor: colorScheme.primary.withAlpha(150),
                       onTap: () async {
                         final picked = await showTimePicker(
                           context: context,
@@ -56,9 +54,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                   "Select time",
                   style: TextStyle(
                     fontSize: 14,
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withAlpha(190),
+                    color: colorScheme.onSurface.withAlpha(190),
                   ),
                 ),
               ],
@@ -73,13 +69,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
                 SizedBox(
                   width: 110,
                   child: Card(
-                    shadowColor: Theme.of(context).colorScheme.surface,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(10),
                       splashFactory: NoSplash.splashFactory,
-                      highlightColor: Theme.of(
-                        context,
-                      ).colorScheme.primary.withAlpha(150),
+                      highlightColor: colorScheme.primary.withAlpha(150),
                       onTap: () async {
                         final picked = await showDatePicker(
                           context: context,
@@ -107,9 +100,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                   "Select date",
                   style: TextStyle(
                     fontSize: 14,
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withAlpha(190),
+                    color: colorScheme.onSurface.withAlpha(190),
                   ),
                 ),
               ],

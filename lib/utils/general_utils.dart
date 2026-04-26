@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 bool isFutureDateTime(DateTime selectedDate, TimeOfDay selectedTime) {
   final now = DateTime.now();
@@ -20,4 +21,9 @@ String formateDate(DateTime dateTime) {
 
 String formateTime(DateTime dateTime) {
   return "${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}";
+}
+
+tz.TZDateTime convertToTZDateTime(DateTime dateTime) {
+  final location = tz.local;
+  return tz.TZDateTime.from(dateTime, location);
 }

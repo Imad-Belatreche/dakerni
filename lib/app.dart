@@ -1,5 +1,6 @@
 import 'package:dakerni/cubits/notification/notification_cubit.dart';
 import 'package:dakerni/pages/main_page.dart';
+import 'package:dakerni/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,14 +9,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const cyberRed = Color.fromARGB(255, 171, 0, 0);
-    const deepBlack = Color.fromARGB(255, 20, 0, 0);
-    const pureWhite = Colors.white;
-
     return MaterialApp(
       title: 'Dakerni',
       theme: ThemeData.dark().copyWith(
         appBarTheme: AppBarTheme(
+          backgroundColor: colorScheme.primary,
+          foregroundColor: colorScheme.onPrimary,
           centerTitle: true,
           shadowColor: Theme.of(
             context,
@@ -25,7 +24,9 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
+        scaffoldBackgroundColor: colorScheme.surface,
         cardTheme: CardThemeData(
+          shadowColor: colorScheme.surface,
           elevation: 1,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -37,16 +38,10 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        colorScheme: ColorScheme.fromSeed(
-          primary: cyberRed,
-          onPrimary: pureWhite,
-          secondary: pureWhite,
-          onSecondary: deepBlack,
-          surface: deepBlack,
-          onSurface: pureWhite,
-          seedColor: const Color.fromARGB(255, 61, 0, 1),
-          brightness: Brightness.dark,
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: colorScheme.surface,
         ),
+        colorScheme: colorScheme,
       ),
       home: BlocProvider(
         create: (context) => NotificationCubit(),
