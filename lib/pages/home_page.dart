@@ -38,6 +38,8 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
+  String? selectedOption;
+
   @override
   Widget build(BuildContext context) {
     String formatDateTime(DateTime date, TimeOfDay time) {
@@ -81,7 +83,56 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(height: 14),
           DateTimePicker(scheduleService: _scheduleService),
-          SizedBox(height: 36),
+          SizedBox(height: 14),
+          RadioGroup<String>(
+            onChanged: (value) {
+              setState(() {
+                selectedOption = value;
+              });
+            },
+            groupValue: selectedOption,
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                splashFactory: NoSplash.splashFactory,
+                highlightColor: Colors.transparent,
+              ),
+              child: Column(
+                spacing: -10,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 8,
+                      right: 8,
+                      bottom: 10,
+                    ),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "How often do you want to be reminded?",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  RadioListTile<String>(
+                    value: "once",
+                    title: Text("Only once"),
+                  ),
+                  RadioListTile<String>(
+                    value: "daily",
+                    title: Text("Repeat daily"),
+                  ),
+                  RadioListTile<String>(
+                    value: "weekly",
+                    title: Text("Repeat weekly"),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 14),
           ElevatedButton(
             onPressed: () async {
               final messenger = ScaffoldMessenger.of(context);
