@@ -15,4 +15,6 @@ class NotificationModel {
     required this.scheduledDate,
     this.isRead = false,
   }) : createdAt = DateTime.now();
+
+  bool get isActive => scheduledDate.isAfter(DateTime.now());
 }
