@@ -3,6 +3,7 @@ import 'package:dakerni/pages/main_page.dart';
 import 'package:dakerni/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -12,14 +13,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Dakerni',
       theme: ThemeData.dark().copyWith(
+        textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme).apply(
+          bodyColor: colorScheme.onSurface,
+          displayColor: colorScheme.onSurface,
+        ),
         appBarTheme: AppBarTheme(
-          backgroundColor: colorScheme.primary,
-          foregroundColor: colorScheme.onPrimary,
-          centerTitle: true,
-          shadowColor: Theme.of(
-            context,
-          ).colorScheme.surface.withValues(alpha: 0.2),
-          elevation: 5,
+          backgroundColor: colorScheme.surface,
+          foregroundColor: colorScheme.onSurface,
+
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
