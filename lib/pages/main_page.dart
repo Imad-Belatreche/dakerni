@@ -1,8 +1,5 @@
-import 'package:dakerni/cubits/notification/notification_cubit.dart';
-import 'package:dakerni/pages/home_page.dart';
 import 'package:dakerni/pages/notification_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -12,49 +9,9 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  late final NotificationCubit _notificationCubit;
-  int _selectedIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _notificationCubit = context.read<NotificationCubit>();
-    _notificationCubit.loadNotifications();
-  }
-
-  Widget _buildPage() {
-    if (_selectedIndex == 0) {
-      return const HomePage(key: ValueKey('main'));
-    }
-    return NotificationPage(key: ValueKey('notifications'));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 420),
-          reverseDuration: const Duration(milliseconds: 320),
-          transitionBuilder: (child, animation) {
-            return FadeTransition(
-              opacity: animation,
-              child: SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0, -0.5),
-                  end: Offset.zero,
-                ).animate(animation),
-                child: child,
-              ),
-            );
-          },
-          child: Text(
-            _selectedIndex == 0 ? 'Home Page' : 'Notifications',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            key: ValueKey(_selectedIndex),
-          ),
-        ),
-      ),
       body: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: AnimatedSwitcher(
@@ -91,29 +48,7 @@ class _MainPageState extends State<MainPage> {
               ),
             );
           },
-          child: _buildPage(),
-        ),
-      ),
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-          splashFactory: NoSplash.splashFactory,
-          highlightColor: Colors.transparent,
-        ),
-        child: BottomNavigationBar(
-          elevation: 10,
-          currentIndex: _selectedIndex,
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: 'Notifications',
-            ),
-          ],
+          child: NotificationPage(key: ValueKey('notifications')),
         ),
       ),
     );
